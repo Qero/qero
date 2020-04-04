@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-二级目录
+三级目录
 ================================
 
 .. toctree::
    :maxdepth: 2
    
-   sub_content/content
+   convention

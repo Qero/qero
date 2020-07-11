@@ -3,10 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-二级目录
+Welcome to qero's documentation!
 ================================
 
 .. toctree::
    :maxdepth: 2
    
-   face_detect.md.txt
+   main/convention
+   main/content
+   biometric/index
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

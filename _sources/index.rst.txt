@@ -7,7 +7,7 @@ Welcome to qero's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 9
    
    main/convention
    main/content

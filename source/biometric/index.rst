@@ -9,4 +9,5 @@ Biometric
 .. toctree::
    :maxdepth: 2
    
-   face_detect
+   face_detection/index
+   face_recognition/index

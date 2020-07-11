@@ -3,11 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Biometric
+Face Recognition
 ================================
 
 .. toctree::
    :maxdepth: 2
    
-   face_detection/index
-   face_recognition/index
+   arcface
+   sphereface

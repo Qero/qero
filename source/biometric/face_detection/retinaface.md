@@ -1,6 +1,6 @@
 # RetinaFace
 
-RetinaFace是基于RetinaNet对Face场景下的一个优化, 所以先介绍RetinaNet对Face
+RetinaFace是RetinaNet对Face场景下的一个优化, 所以先介绍RetinaNet对Face
 ## RetinaNet
 1. 重点
     1. Focal Loss

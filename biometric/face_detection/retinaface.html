@@ -171,33 +171,30 @@
 <h2>RetinaNet<a class="headerlink" href="#retinanet" title="Permalink to this headline">¶</a></h2>
 <ol>
 <li><p>重点</p>
-<ol class="simple">
-<li><p>Focal Loss</p></li>
-</ol>
-<ul class="simple">
-<li><p>在One-stage检测模型训练时, 背景框的占大多数, 且大部分的背景框都相对简单(易被识别), 这类型的框容易主导Loss的值, 为了解决训练时前背景样本不均衡的问题, 需要对原Cross Entropy Loss进行加权, 如下:</p></li>
-</ul>
+<ol>
+<li><p>Focal Loss</p>
+<ul>
+<li><p>在One-stage检测模型训练时, 背景框的占大多数, 且大部分的背景框都相对简单(易被识别), 这类型的框容易主导Loss的值, 为了解决训练时前背景样本不均衡的问题, 需要对原Cross Entropy Loss进行加权, 如下:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}p_t = \begin{cases} p &amp;\text{if } y=1 \\ 1-p &amp;\text{otherwise} . \end{cases}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[FL(p_t) = -(1-p_t)^\gamma log(p_t)\]</div>
-<ul class="simple">
-<li><p>其中, $\gamma$是超参数, 当$\gamma = 0$时, FL等价于CE; 当$\gamma$增大时, FL对于Easy样本的权重会变小;因子$\alpha_t$是正负样本的共同调节因子, 降低$\alpha_t$可以防止简单稀有类被完全忽略</p></li>
-</ul>
+</li>
+<li><p>其中, $\gamma$是超参数, 当$\gamma = 0$时, FL等价于CE; 当$\gamma$增大时, FL对于Easy样本的权重会变小;因子$\alpha_t$是正负样本的共同调节因子, 降低$\alpha_t$可以防止简单稀有类被完全忽略</p>
 <div class="math notranslate nohighlight">
 \[FL(p_t) = -\alpha_t(1-p_t)^\gamma log(p_t)\]</div>
-<ol class="simple">
+</li>
+</ul>
+</li>
 <li><p>FPN加入至网络中
-<img alt="RetinaNet" src="../../_images/retinanet.png" /></p></li>
-</ol>
+<img alt="RetinaNet" src="../../_images/retinanet.png" /></p>
 <ul class="simple">
 <li><p>backbone(ResNet+FPN): 用于提取卷积特征;</p></li>
 <li><p>class subnet: 用于对Boxes中的类别进行分类;</p></li>
 <li><p>box subnet: 用于把Anchor Boxes回归至Group True Boxes;</p></li>
 </ul>
-<ol class="simple">
-<li><p>Anchors机制</p></li>
-</ol>
+</li>
+<li><p>Anchors机制</p>
 <ul class="simple">
 <li><p>对于和GT的IoU大于0.5的Anchors, 指派为前景样本;</p></li>
 <li><p>对于和GT的IoU介于0.4~0.5的Anchors, 在训练时直接省略, 不参与训练;</p></li>
@@ -207,6 +204,8 @@
 <li><p>对于前景样本, 回归anchor和GT之间的相对offset(4维度的向量);</p></li>
 <li><p>对于分类, 前景样本的预测是一个sigmoid的输出, 预测是否属于这个类, 后接Focal Loss解决不均衡问题, 背景样本不属于任何类;</p></li>
 </ul>
+</li>
+</ol>
 </li>
 <li><p>Ref:</p>
 <ul class="simple">

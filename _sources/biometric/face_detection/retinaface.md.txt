@@ -15,7 +15,7 @@ RetinaFace是基于RetinaNet对Face场景下的一个优化, 所以先介绍Reti
             ```math
             FL(p_t) = -\alpha_t(1-p_t)^\gamma log(p_t)
             ```
-    2. FPN加入至网络中
+    2. 网络结构
         ![RetinaNet](retinanet.png)
         + backbone(ResNet+FPN): 用于提取卷积特征;
         + class subnet: 用于对Boxes中的类别进行分类;

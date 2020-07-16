@@ -12,3 +12,5 @@ Biometric
    face_detection/index
 
    face_recognition/index
+
+   anti-spoofing/index

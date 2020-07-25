@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Face Detection &mdash; qero 1.0.0 documentation</title>
+  <title>RetinaNet &mdash; qero 1.0.0 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="SSO" href="sso.html" />
-    <link rel="prev" title="Biometric" href="../index.html" /> 
+    <link rel="next" title="RetinaFace" href="retinaface.html" />
+    <link rel="prev" title="SSO" href="sso.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,9 +85,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../main/convention.html">约定</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../main/content.html">二级目录</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Biometric</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Face Detection</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Face Detection</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sso.html">SSO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="retinanet.html">RetinaNet</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RetinaNet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="retinaface.html">RetinaFace</a></li>
 </ul>
 </li>
@@ -142,13 +142,15 @@
         
           <li><a href="../index.html">Biometric</a> &raquo;</li>
         
-      <li>Face Detection</li>
+          <li><a href="index.html">Face Detection</a> &raquo;</li>
+        
+      <li>RetinaNet</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/biometric/face_detection/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/biometric/face_detection/retinanet.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,15 +163,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="face-detection">
-<h1>Face Detection<a class="headerlink" href="#face-detection" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="retinanet">
+<h1>RetinaNet<a class="headerlink" href="#retinanet" title="Permalink to this headline">¶</a></h1>
+<ol>
+<li><p>重点</p>
+<ol>
+<li><p>Focal Loss</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="sso.html">SSO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="retinanet.html">RetinaNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="retinaface.html">RetinaFace</a></li>
+<li><p>在One-stage检测模型训练时, 背景框的占大多数, 且大部分的背景框都相对简单(易被识别), 这类型的框容易主导Loss的值, 为了解决训练时前背景样本不均衡的问题, 需要对原Cross Entropy Loss进行加权, 如下:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_t = \begin{cases} p &amp;\text{if } y=1 \\ 1-p &amp;\text{otherwise} . \end{cases}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[FL(p_t) = -(1-p_t)^\gamma log(p_t)\]</div>
+</li>
+<li><p>其中, $\gamma$是超参数, 当$\gamma = 0$时, FL等价于CE; 当$\gamma$增大时, FL对于Easy样本的权重会变小;因子$\alpha_t$是正负样本的共同调节因子, 降低$\alpha_t$可以防止简单稀有类被完全忽略</p>
+<div class="math notranslate nohighlight">
+\[FL(p_t) = -\alpha_t(1-p_t)^\gamma log(p_t)\]</div>
+</li>
 </ul>
-</div>
+</li>
+<li><p>网络结构
+<img alt="RetinaNet" src="../../_images/retinanet.png" /></p>
+<ul class="simple">
+<li><p>backbone(ResNet+FPN): 用于提取卷积特征;</p></li>
+<li><p>class subnet: 用于对Boxes中的类别进行分类;</p></li>
+<li><p>box subnet: 用于把Anchor Boxes回归至Group True Boxes;</p></li>
+</ul>
+</li>
+<li><p>Anchors机制</p>
+<ul class="simple">
+<li><p>对于和GT的IoU大于0.5的Anchors, 指派为前景样本;</p></li>
+<li><p>对于和GT的IoU介于0.4~0.5的Anchors, 在训练时直接省略, 不参与训练;</p></li>
+<li><p>对于和GT的IoU小于0.4的Anchors, 指派为背景样本;</p></li>
+<li><p>每个参与训练的Anchor最多只有一个对应的GT类别;</p></li>
+<li><p>对于背景样本的Anchor不进行回归;</p></li>
+<li><p>对于前景样本, 回归anchor和GT之间的相对offset(4维度的向量);</p></li>
+<li><p>对于分类, 前景样本的预测是一个sigmoid的输出, 预测是否属于这个类, 后接Focal Loss解决不均衡问题, 背景样本不属于任何类;</p></li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>Ref:</p>
+<ul class="simple">
+<li><p>https://arxiv.org/abs/1708.02002</p></li>
+</ul>
+</li>
+</ol>
 </div>
 
 
@@ -180,10 +219,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="sso.html" class="btn btn-neutral float-right" title="SSO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="retinaface.html" class="btn btn-neutral float-right" title="RetinaFace" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral float-left" title="Biometric" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sso.html" class="btn btn-neutral float-left" title="SSO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

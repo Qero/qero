@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Face Recognition" href="../face_recognition/index.html" />
-    <link rel="prev" title="SSO" href="sso.html" /> 
+    <link rel="prev" title="RetinaNet" href="retinanet.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,13 +87,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Biometric</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Face Detection</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="sso.html">SSO</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">RetinaFace</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#retinanet">RetinaNet</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="retinanet.html">RetinaNet</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">RetinaFace</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../face_recognition/index.html">Face Recognition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../anti-spoofing/index.html">Anti Spoofing</a></li>
 </ul>
 </li>
 </ul>
@@ -166,54 +165,48 @@
             
   <div class="section" id="retinaface">
 <h1>RetinaFace<a class="headerlink" href="#retinaface" title="Permalink to this headline">¶</a></h1>
-<p>RetinaFace是RetinaNet对Face场景下的一个优化, 所以先介绍RetinaNet对Face</p>
-<div class="section" id="retinanet">
-<h2>RetinaNet<a class="headerlink" href="#retinanet" title="Permalink to this headline">¶</a></h2>
-<ol>
+<p><img alt="RetinaFace" src="../../_images/retinaface.png" /></p>
+<ol class="simple">
 <li><p>重点</p>
-<ol>
-<li><p>Focal Loss</p>
+<ol class="simple">
+<li><p>MultiTask Learning</p>
+<ul class="simple">
+<li><p>与其他Single Stage的检测模型不同, RetinaFace采用MultiTask的方式进行训练, 其中包括Box的分类损失(是否包含人脸)、Bounding Box的回归损失、5个人脸关键点的回归损失、一个3D-&gt;2D的重构损失, RetinaFace的损失函数如下所示;
+<img alt="Loss" src="../../_images/retinaface_loss.png" /></p></li>
+</ul>
+</li>
+<li><p>结构</p>
+<ul class="simple">
+<li><p>采用Deformable Convolution代替一般卷积;</p></li>
+<li><p>在Feature Pyramid上, 使用Contect Module来进行特征提取;
+<img alt="Context Module" src="../../_images/context_module.png" /></p></li>
+<li><p>负责3D-&gt;2D的重构是一个图卷积网络来完成Mesh Decode, 后接一个Differentiable Renderer, 重构损失为重构前后2D图pixel-to-pixel的L1范数, 这是一个自监督的学习分支;</p></li>
+</ul>
+</li>
+<li><p>训练</p>
+<ul class="simple">
+<li><p>作者对WIDER FACE数据集进行了人脸关键5点的标注, 增加了监督信息的输入, 模型效果得到关键性的提升;</p></li>
+<li><p>Anchor Match中:</p>
 <ul>
-<li><p>在One-stage检测模型训练时, 背景框的占大多数, 且大部分的背景框都相对简单(易被识别), 这类型的框容易主导Loss的值, 为了解决训练时前背景样本不均衡的问题, 需要对原Cross Entropy Loss进行加权, 如下:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}p_t = \begin{cases} p &amp;\text{if } y=1 \\ 1-p &amp;\text{otherwise} . \end{cases}\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[FL(p_t) = -(1-p_t)^\gamma log(p_t)\]</div>
-</li>
-<li><p>其中, $\gamma$是超参数, 当$\gamma = 0$时, FL等价于CE; 当$\gamma$增大时, FL对于Easy样本的权重会变小;因子$\alpha_t$是正负样本的共同调节因子, 降低$\alpha_t$可以防止简单稀有类被完全忽略</p>
-<div class="math notranslate nohighlight">
-\[FL(p_t) = -\alpha_t(1-p_t)^\gamma log(p_t)\]</div>
-</li>
+<li><p>和Ground True的IOU大于0.5的Anchor, 为正样本;</p></li>
+<li><p>Ground True的IOU小于0.5且大于0.3的Anchor, 为负样本;</p></li>
+<li><p>Ground True的IOU小于0.3的Anchor, 在训练过程中忽略, 减少大量无价值的负样本;</p></li>
 </ul>
 </li>
-<li><p>网络结构
-<img alt="RetinaNet" src="../../_images/retinanet.png" /></p>
-<ul class="simple">
-<li><p>backbone(ResNet+FPN): 用于提取卷积特征;</p></li>
-<li><p>class subnet: 用于对Boxes中的类别进行分类;</p></li>
-<li><p>box subnet: 用于把Anchor Boxes回归至Group True Boxes;</p></li>
-</ul>
-</li>
-<li><p>Anchors机制</p>
-<ul class="simple">
-<li><p>对于和GT的IoU大于0.5的Anchors, 指派为前景样本;</p></li>
-<li><p>对于和GT的IoU介于0.4~0.5的Anchors, 在训练时直接省略, 不参与训练;</p></li>
-<li><p>对于和GT的IoU小于0.4的Anchors, 指派为背景样本;</p></li>
-<li><p>每个参与训练的Anchor最多只有一个对应的GT类别;</p></li>
-<li><p>对于背景样本的Anchor不进行回归;</p></li>
-<li><p>对于前景样本, 回归anchor和GT之间的相对offset(4维度的向量);</p></li>
-<li><p>对于分类, 前景样本的预测是一个sigmoid的输出, 预测是否属于这个类, 后接Focal Loss解决不均衡问题, 背景样本不属于任何类;</p></li>
+<li><p>和RetinaNet不同, 训练采用OHEM来解决样本unbalance的问题, 而非Focal Loss;</p></li>
+<li><p>分类损失使用的是Softmax Loss;</p></li>
 </ul>
 </li>
 </ol>
 </li>
 <li><p>Ref:</p>
 <ul class="simple">
-<li><p>https://arxiv.org/abs/1708.02002</p></li>
+<li><p>原论文 https://arxiv.org/abs/1708.02002</p></li>
+<li><p>Deformable Convolution相关 https://arxiv.org/abs/1703.06211</p></li>
+<li><p>Mesh Decode相关 https://arxiv.org/abs/1904.03525</p></li>
 </ul>
 </li>
 </ol>
-</div>
 </div>
 
 
@@ -227,7 +220,7 @@
         <a href="../face_recognition/index.html" class="btn btn-neutral float-right" title="Face Recognition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="sso.html" class="btn btn-neutral float-left" title="SSO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="retinanet.html" class="btn btn-neutral float-left" title="RetinaNet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

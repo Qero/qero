@@ -10,4 +10,6 @@ Face Detection
    :maxdepth: 2
    
    sso
+   retinanet
    retinaface
+

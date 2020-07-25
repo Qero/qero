@@ -1,32 +1,27 @@
 # RetinaFace
+![RetinaFace](retinaface.png)
 
-RetinaFace是RetinaNet对Face场景下的一个优化, 所以先介绍RetinaNet对Face
-## RetinaNet
 1. 重点
-    1. Focal Loss
-        + 在One-stage检测模型训练时, 背景框的占大多数, 且大部分的背景框都相对简单(易被识别), 这类型的框容易主导Loss的值, 为了解决训练时前背景样本不均衡的问题, 需要对原Cross Entropy Loss进行加权, 如下:
-            ```math
-            p_t = \begin{cases} p &\text{if } y=1 \\ 1-p &\text{otherwise} . \end{cases}
-            ```
-            ```math
-            FL(p_t) = -(1-p_t)^\gamma log(p_t)
-            ```
-        + 其中, $\gamma$是超参数, 当$\gamma = 0$时, FL等价于CE; 当$\gamma$增大时, FL对于Easy样本的权重会变小;因子$\alpha_t$是正负样本的共同调节因子, 降低$\alpha_t$可以防止简单稀有类被完全忽略
-            ```math
-            FL(p_t) = -\alpha_t(1-p_t)^\gamma log(p_t)
-            ```
-    2. 网络结构
-        ![RetinaNet](retinanet.png)
-        + backbone(ResNet+FPN): 用于提取卷积特征;
-        + class subnet: 用于对Boxes中的类别进行分类;
-        + box subnet: 用于把Anchor Boxes回归至Group True Boxes;
-    3. Anchors机制
-        + 对于和GT的IoU大于0.5的Anchors, 指派为前景样本;
-        + 对于和GT的IoU介于0.4~0.5的Anchors, 在训练时直接省略, 不参与训练;
-        + 对于和GT的IoU小于0.4的Anchors, 指派为背景样本;
-        + 每个参与训练的Anchor最多只有一个对应的GT类别;
-        + 对于背景样本的Anchor不进行回归;
-        + 对于前景样本, 回归anchor和GT之间的相对offset(4维度的向量);
-        + 对于分类, 前景样本的预测是一个sigmoid的输出, 预测是否属于这个类, 后接Focal Loss解决不均衡问题, 背景样本不属于任何类;
+    
+    1.  MultiTask Learning
+        + 与其他Single Stage的检测模型不同, RetinaFace采用MultiTask的方式进行训练, 其中包括Box的分类损失(是否包含人脸)、Bounding Box的回归损失、5个人脸关键点的回归损失、一个3D->2D的重构损失, RetinaFace的损失函数如下所示;
+        ![Loss](retinaface_loss.png)
+     
+    2. 结构
+        + 采用Deformable Convolution代替一般卷积;
+        + 在Feature Pyramid上, 使用Contect Module来进行特征提取;
+        ![Context Module](context_module.png)
+        + 负责3D->2D的重构是一个图卷积网络来完成Mesh Decode, 后接一个Differentiable Renderer, 重构损失为重构前后2D图pixel-to-pixel的L1范数, 这是一个自监督的学习分支;
+    3. 训练
+        + 作者对WIDER FACE数据集进行了人脸关键5点的标注, 增加了监督信息的输入, 模型效果得到关键性的提升;
+        + Anchor Match中:
+            + 和Ground True的IOU大于0.5的Anchor, 为正样本;
+            + Ground True的IOU小于0.5且大于0.3的Anchor, 为负样本;
+            + Ground True的IOU小于0.3的Anchor, 在训练过程中忽略, 减少大量无价值的负样本;
+        + 和RetinaNet不同, 训练采用OHEM来解决样本unbalance的问题, 而非Focal Loss;
+        + 分类损失使用的是Softmax Loss;
+
 2. Ref:
-    + https://arxiv.org/abs/1708.02002
+    + 原论文 https://arxiv.org/abs/1708.02002
+    + Deformable Convolution相关 https://arxiv.org/abs/1703.06211
+    + Mesh Decode相关 https://arxiv.org/abs/1904.03525

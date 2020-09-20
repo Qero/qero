@@ -9,7 +9,7 @@ Face Detection
 .. toctree::
    :maxdepth: 2
    
-   sso
+   ssd
    retinanet
    retinaface
 

@@ -9,9 +9,9 @@ Welcome to qero's documentation!
 .. toctree::
    :maxdepth: 9
    
-   main/convention
-   main/content
-   biometric/index
+   algorithm/index
+   engineering/index
+   example/example
 
 
 

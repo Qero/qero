@@ -10,3 +10,4 @@
    :maxdepth: 8
    
    detection/index
+   super_resolution/index

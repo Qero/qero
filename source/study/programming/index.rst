@@ -3,11 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-算法笔记
+编程
 ================================
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 1
    
-   detection/index
-   super_resolution/index
+   

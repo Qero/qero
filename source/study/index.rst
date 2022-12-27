@@ -3,21 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to qero's Notebook!
+学习笔记
 ================================
 
 .. toctree::
-   :maxdepth: 9
+   :maxdepth: 8
    
-   study/index
-   in_action/index
-   example/example
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   detection/index
+   super_resolution/index
+   programming/index

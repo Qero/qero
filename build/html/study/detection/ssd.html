@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSD &mdash; qero 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="RetinaNet" href="retinanet.html" />
+    <link rel="prev" title="目标检测" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> qero
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">学习笔记</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">目标检测</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SSD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="retinanet.html">RetinaNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="retinaface.html">RetinaFace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sod.html">综述 Salient Object Detection</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../super_resolution/index.html">超分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoise/index.html">降噪</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quality_assessment/index.html">质量评估</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../programming/index.html">编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../in_action/index.html">实战笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example/example.html">例子</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">qero</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">学习笔记</a></li>
+          <li class="breadcrumb-item"><a href="index.html">目标检测</a></li>
+      <li class="breadcrumb-item active">SSD</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/study/detection/ssd.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ssd">
+<h1>SSD<a class="headerlink" href="#ssd" title="Permalink to this heading"></a></h1>
+<ol>
+<li><p>总流程</p>
+<ol>
+<li><p>在每个不同尺寸的、有prediction的特征图上, 生成相应的DefaultBox(不同的大小和纵横比);</p></li>
+<li><p>利用GroundTurth完成框匹配, 具体MatchStrategy如下:</p>
+<ol class="simple">
+<li><p>先把与GT最重叠的DB配对上;</p></li>
+<li><p>再把IOU大于阈值(0.5)的DB与相应重叠的GT配对上;
+步骤1的目的是能够保证每一个GT都有一个DB对应上, 步骤2的目的是减少负样本的数量、增大正样本的数量和检索模糊的匹配结果</p></li>
+<li><p>完成配对后, 每一个DB与GT都能做以下计算</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>假设每一个DB为<span class="o">(</span>dx, dy, dw, dh<span class="o">)</span>, 表示为框的xy坐标和宽高
+同理GT表示为<span class="o">(</span>gx, gy, gw, gh<span class="o">)</span>
+<span class="nv">则每个被匹配DB回归的目标为可以转成LOC</span><span class="o">=((</span>gx-dx<span class="o">)</span>/dw, <span class="o">(</span>gy-dy<span class="o">)</span>/dh, log<span class="o">(</span>gw/dw<span class="o">)</span>, log<span class="o">(</span>gh/dh<span class="o">))</span>
+<span class="nv">加上对框的类别分类C</span><span class="o">=(</span>背景, 类别1, ..., 类别N<span class="o">)</span>
+每个被配对的框对应学习目标为<span class="o">[</span>LOC, C<span class="o">]</span>
+</pre></div>
+</div>
+<p><img alt="sso" src="../../_images/ssd.png" /></p>
+</li>
+<li><p>模型在每个有prediction输出的特征图的每一个位置上输出prediction, 学习每个框输出的[LOC, C]</p></li>
+</ol>
+</li>
+<li><p>Ref:</p>
+<ul class="simple">
+<li><p>https://arxiv.org/abs/1512.02325</p></li>
+<li><p>https://blog.csdn.net/u010712012/article/details/86555814</p></li>
+</ul>
+</li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="目标检测" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="retinanet.html" class="btn btn-neutral float-right" title="RetinaNet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, qero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

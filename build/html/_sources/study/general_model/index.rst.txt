@@ -9,4 +9,6 @@
 .. toctree::
    :maxdepth: 1
    
+   MLPs-Mixer
+   Res-MLP
 

@@ -13,4 +13,6 @@
    super_resolution/index
    denoise/index
    quality_assessment/index
+   segmentation/index
+   general_model/index
    programming/index

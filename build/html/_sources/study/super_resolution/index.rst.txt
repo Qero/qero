@@ -16,3 +16,18 @@
    DSRN
    EDSR_MDSR
    EDVR
+   EnhanceNet
+   ESRGAN
+   LapSRN
+   LIIF
+   MemNet
+   Meta-RDN
+   MSRN
+   RCAN
+   RDN
+   RealSR
+   RNAN
+   SAN
+   SRDenseNet
+   SRFBN
+   SRGAN

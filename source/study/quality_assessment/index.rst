@@ -10,4 +10,7 @@
    :maxdepth: 1
 
    DeepFL-IQA
+   NIMA
+   RankIQA
+   VIDEVAL
    

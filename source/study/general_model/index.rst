@@ -3,14 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-目标检测
+通用模型
 ================================
 
 .. toctree::
    :maxdepth: 1
    
-   ssd
-   retinanet
-   retinaface
-   sod
 

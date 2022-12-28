@@ -12,4 +12,5 @@
    detection/index
    super_resolution/index
    denoise/index
+   quality_assessment/index
    programming/index

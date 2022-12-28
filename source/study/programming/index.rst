@@ -9,4 +9,5 @@
 .. toctree::
    :maxdepth: 1
    
+   EffectiveC++
    

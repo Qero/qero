@@ -12,4 +12,7 @@
    CARN
    ClassSR
    DBPN
-   SOD
+   DRRN
+   DSRN
+   EDSR_MDSR
+   EDVR

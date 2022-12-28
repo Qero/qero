@@ -11,4 +11,5 @@
    
    detection/index
    super_resolution/index
+   denoise/index
    programming/index

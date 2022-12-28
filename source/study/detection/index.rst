@@ -12,4 +12,5 @@ CV-Detection
    ssd
    retinanet
    retinaface
+   sod
 

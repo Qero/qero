@@ -10,3 +10,6 @@
    :maxdepth: 1
    
    CARN
+   ClassSR
+   DBPN
+   SOD

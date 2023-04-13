@@ -8,3 +8,5 @@
 
 .. toctree::
    :maxdepth: 8
+
+   programming/index

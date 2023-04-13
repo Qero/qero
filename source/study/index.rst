@@ -9,11 +9,11 @@
 .. toctree::
    :maxdepth: 8
    
-   detection/index
-   super_resolution/index
    denoise/index
+   detection/index
+   defussion/index
+   general_model/index
+   super_resolution/index
    quality_assessment/index
    segmentation/index
-   general_model/index
-   diffusion/index
-   programming/index
+   super_resolution/index

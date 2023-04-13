@@ -152,10 +152,10 @@ $a^2+b^2$的高斯分布，记为$X_{noised} \sim N(0,a^2+b^2)$；</p></li>
 <p>一个比较直观的训练方法，就是直接拿加噪声的后图片放进模型中进行推理，在获得结果后，直接计算这个结果和原图的差异，再进行梯度下降，如下图所示：</p>
 <p><img alt="../../_images/screenshot-20230413-120220.png" src="../../_images/screenshot-20230413-120220.png" /></p>
 <p>这么做，也不是不行，不过原论文有一个数学上的描述：</p>
-<p><img alt="study/diffusion/screenshot-20230413-150508.png" src="study/diffusion/screenshot-20230413-150508.png" /></p>
-<p><img alt="study/diffusion/screenshot-20230413-150614.png" src="study/diffusion/screenshot-20230413-150614.png" /></p>
+<p><img alt="../../_images/screenshot-20230413-150508.png" src="../../_images/screenshot-20230413-150508.png" /></p>
+<p><img alt="../../_images/screenshot-20230413-150614.png" src="../../_images/screenshot-20230413-150614.png" /></p>
 <p>总的来说，我们可以直接从自然图像与去噪图像的差异来获得梯度，也可以从生成噪声和估计噪声来获得梯度，两者从理论上讲，区别不大，不过一般情况，更倾向于后者，因为去噪图片中包含了自然图像的信息，对模型来说还需要预测这部分的数据，对模型来说是一个负担，相比之下，让模型学习噪声会更容易些，这个和ResNet中，让模型来学习残差的思路有异曲同工之妙吧。</p>
-<p><img alt="study/diffusion/screenshot-20230413-151829.png" src="study/diffusion/screenshot-20230413-151829.png" /></p>
+<p><img alt="../../_images/screenshot-20230413-151829.png" src="../../_images/screenshot-20230413-151829.png" /></p>
 </section>
 <section id="talk-is-cheap-show-me-the-code">
 <h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Permalink to this heading"></a></h2>
@@ -170,14 +170,14 @@ $a^2+b^2$的高斯分布，记为$X_{noised} \sim N(0,a^2+b^2)$；</p></li>
 </pre></div>
 </div>
 <p>其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果</p>
-<p><img alt="study/diffusion/screenshot-20230413-155759.png" src="study/diffusion/screenshot-20230413-155759.png" /></p>
+<p><img alt="../../_images/screenshot-20230413-155759.png" src="../../_images/screenshot-20230413-155759.png" /></p>
 <p>一个采样的动图</p>
-<p><img alt="study/diffusion/show_results.gif" src="study/diffusion/show_results.gif" /></p>
+<p><img alt="../../_images/show_results.gif" src="../../_images/show_results.gif" /></p>
 </section>
 <section id="id6">
 <h2>后续<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
 <p>对于扩散模型来说，上面介绍得差不多了，扩散模型，目前最大的应用莫过于AIGC了。从目前应用广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：</p>
-<p><img alt="study/diffusion/screenshot-20230413-161018.png" src="study/diffusion/screenshot-20230413-161018.png" /></p>
+<p><img alt="../../_images/screenshot-20230413-161018.png" src="../../_images/screenshot-20230413-161018.png" /></p>
 <p>SD模型的核心还是中间的这个扩散模型，不过增多了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件–在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种finetune的技巧（例如<a class="reference external" href="https://github.com/cloneofsimo/lora">LoRA</a>、<a class="reference external" href="https://openreview.net/pdf?id=d71n4ftoCBy">LoHa</a>、<a class="reference external" href="https://github.com/KohakuBlueleaf/LyCORIS">LyCORIS</a>等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~</p>
 </section>
 <section id="refs">

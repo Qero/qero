@@ -31,3 +31,4 @@
    SRDenseNet
    SRFBN
    SRGAN
+   VideoESPCN

@@ -71,13 +71,13 @@ $X_{noised} = a * X + b * N$
 
 这么做，也不是不行，不过原论文有一个数学上的描述：
 
-![](screenshot-20230413-150508.png)
+![](./_static/screenshot-20230413-150508.png)
 
-![](screenshot-20230413-150614.png)
+![](./_static/screenshot-20230413-150614.png)
 
 总的来说，我们可以直接从自然图像与去噪图像的差异来获得梯度，也可以从生成噪声和估计噪声来获得梯度，两者从理论上讲，区别不大，不过一般情况，更倾向于后者，因为去噪图片中包含了自然图像的信息，对模型来说还需要预测这部分的数据，对模型来说是一个负担，相比之下，让模型学习噪声会更容易些，这个和ResNet中，让模型来学习残差的思路有异曲同工之妙吧。
 
-![](screenshot-20230413-151829.png)
+![](./_static/screenshot-20230413-151829.png)
 
 ## Talk is cheap, show me the code......
 
@@ -95,17 +95,17 @@ def step_embedding(step):
 
 其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果
 
-![](screenshot-20230413-155759.png)
+![](./_static/screenshot-20230413-155759.png)
 
 一个采样的动图
 
-![](show_results.gif)
+![](./_static/show_results.gif)
 
 ## 后续
 
 对于扩散模型来说，上面介绍得差不多了，扩散模型，目前最大的应用莫过于AIGC了。从目前应用广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：
 
-![](screenshot-20230413-161018.png)
+![](./_static/screenshot-20230413-161018.png)
 
 SD模型的核心还是中间的这个扩散模型，不过增多了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件--在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种finetune的技巧（例如[LoRA](https://github.com/cloneofsimo/lora)、[LoHa](https://openreview.net/pdf?id=d71n4ftoCBy)、[LyCORIS](https://github.com/KohakuBlueleaf/LyCORIS)等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~
 

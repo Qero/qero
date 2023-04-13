@@ -89,14 +89,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="ssd">
+  <section class="tex2jax_ignore mathjax_ignore" id="ssd">
 <h1>SSD<a class="headerlink" href="#ssd" title="Permalink to this heading"></a></h1>
-<ol>
+<ol class="arabic">
 <li><p>总流程</p>
-<ol>
+<ol class="arabic">
 <li><p>在每个不同尺寸的、有prediction的特征图上, 生成相应的DefaultBox(不同的大小和纵横比);</p></li>
 <li><p>利用GroundTurth完成框匹配, 具体MatchStrategy如下:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>先把与GT最重叠的DB配对上;</p></li>
 <li><p>再把IOU大于阈值(0.5)的DB与相应重叠的GT配对上;
 步骤1的目的是能够保证每一个GT都有一个DB对应上, 步骤2的目的是减少负样本的数量、增大正样本的数量和检索模糊的匹配结果</p></li>

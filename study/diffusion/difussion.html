@@ -164,15 +164,15 @@
 <section id="talk-is-cheap-show-me-the-code">
 <h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Permalink to this heading"></a></h2>
 <p>代码我上载在<a class="reference external" href="https://github.com/Qero/UnderstandDiffusionModels">Github</a>上，模型使用的是一个ResUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：</p>
-<p><span class="math notranslate nohighlight">\(python
-def step_embedding(step):
-    self._step_angular_speeds = self._step_angular_speeds.to(step.device)
-    emb = torch.concat([
-        torch.sin(self._step_angular_speeds * step), 
-        torch.cos(self._step_angular_speeds * step)], axis=-1
-    )
-    return emb
-\)</span></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step_embedding</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">),</span> 
+        <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">emb</span>
+</pre></div>
+</div>
 <p>其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果</p>
 <p><img alt="" src="../../_images/screenshot-20230413-155759.png" /></p>
 <p>一个采样的动图</p>

@@ -87,7 +87,7 @@ $X_{noised} = a * X + b * N$
 
 代码我上载在[Github](https://github.com/Qero/UnderstandDiffusionModels)上，模型使用的是一个ResUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：
 
-$python
+```python
 def step_embedding(step):
     self._step_angular_speeds = self._step_angular_speeds.to(step.device)
     emb = torch.concat([
@@ -95,7 +95,7 @@ def step_embedding(step):
         torch.cos(self._step_angular_speeds * step)], axis=-1
     )
     return emb
-$
+```
 
 其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果
 

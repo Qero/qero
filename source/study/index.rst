@@ -11,9 +11,8 @@
    
    denoise/index
    detection/index
-   defussion/index
+   diffusion/index
    general_model/index
    super_resolution/index
    quality_assessment/index
    segmentation/index
-   super_resolution/index

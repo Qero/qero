@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SSD &mdash; qero 1.0.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -29,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> qero
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            qero
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -73,7 +76,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">学习笔记</a></li>
           <li class="breadcrumb-item"><a href="index.html">目标检测</a></li>
       <li class="breadcrumb-item active">SSD</li>
@@ -99,11 +102,11 @@
 步骤1的目的是能够保证每一个GT都有一个DB对应上, 步骤2的目的是减少负样本的数量、增大正样本的数量和检索模糊的匹配结果</p></li>
 <li><p>完成配对后, 每一个DB与GT都能做以下计算</p></li>
 </ol>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>假设每一个DB为<span class="o">(</span>dx, dy, dw, dh<span class="o">)</span>, 表示为框的xy坐标和宽高
-同理GT表示为<span class="o">(</span>gx, gy, gw, gh<span class="o">)</span>
-<span class="nv">则每个被匹配DB回归的目标为可以转成LOC</span><span class="o">=((</span>gx-dx<span class="o">)</span>/dw, <span class="o">(</span>gy-dy<span class="o">)</span>/dh, log<span class="o">(</span>gw/dw<span class="o">)</span>, log<span class="o">(</span>gh/dh<span class="o">))</span>
-<span class="nv">加上对框的类别分类C</span><span class="o">=(</span>背景, 类别1, ..., 类别N<span class="o">)</span>
-每个被配对的框对应学习目标为<span class="o">[</span>LOC, C<span class="o">]</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>假设每一个DB为<span class="o">(</span>dx,<span class="w"> </span>dy,<span class="w"> </span>dw,<span class="w"> </span>dh<span class="o">)</span>,<span class="w"> </span>表示为框的xy坐标和宽高
+同理GT表示为<span class="o">(</span>gx,<span class="w"> </span>gy,<span class="w"> </span>gw,<span class="w"> </span>gh<span class="o">)</span>
+<span class="nv">则每个被匹配DB回归的目标为可以转成LOC</span><span class="o">=((</span>gx-dx<span class="o">)</span>/dw,<span class="w"> </span><span class="o">(</span>gy-dy<span class="o">)</span>/dh,<span class="w"> </span>log<span class="o">(</span>gw/dw<span class="o">)</span>,<span class="w"> </span>log<span class="o">(</span>gh/dh<span class="o">))</span>
+<span class="nv">加上对框的类别分类C</span><span class="o">=(</span>背景,<span class="w"> </span>类别1,<span class="w"> </span>...,<span class="w"> </span>类别N<span class="o">)</span>
+每个被配对的框对应学习目标为<span class="o">[</span>LOC,<span class="w"> </span>C<span class="o">]</span>
 </pre></div>
 </div>
 <p><img alt="sso" src="../../_images/ssd.png" /></p>

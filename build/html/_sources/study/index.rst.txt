@@ -15,4 +15,5 @@
    quality_assessment/index
    segmentation/index
    general_model/index
+   diffusion/index
    programming/index

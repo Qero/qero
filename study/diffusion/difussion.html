@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>你你你你来玩扩散吗？ &mdash; qero 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="编程" href="../programming/index.html" />
+    <link rel="prev" title="扩散模型" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> qero
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">学习笔记</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../detection/index.html">目标检测</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../super_resolution/index.html">超分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../denoise/index.html">降噪</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quality_assessment/index.html">质量评估</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../segmentation/index.html">分割</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../general_model/index.html">通用模型</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">扩散模型</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">你你你你来玩扩散吗？</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">从一张纯随机图片开始说起……</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">这个任务有点难……</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">前向扩散</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">优化目标是什么？</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#talk-is-cheap-show-me-the-code">Talk is cheap, show me the code……</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">后续</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refs">Refs.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../programming/index.html">编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../in_action/index.html">实战笔记</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../example/example.html">例子</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">qero</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">学习笔记</a></li>
+          <li class="breadcrumb-item"><a href="index.html">扩散模型</a></li>
+      <li class="breadcrumb-item active">你你你你来玩扩散吗？</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/study/diffusion/difussion.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>你你你你来玩扩散吗？<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<section id="id2">
+<h2>从一张纯随机图片开始说起……<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<p>想象一下，如何让计算机凭空去创造一张自然的数字图像呢？计算机可以凭空生成一张纯随机图像，但随机图像是没有意义的。但所谓自然数字图像，其实就是一堆相互之间符合某种分布的像素点的集合，而一张纯随机的图片，实质上就是像素点都是独立分布的（例如每一个像素都独立服从标准高斯分布）。</p>
+<p>那要想让计算机凭空创造一张自然图像，其实就是对随机图像中的像素点进行一些处理，使其这些像素点之间的联系在处理后也能服从像自然图片一样的分布，即完成从随机图像到自然图像的映射，从而达到了让计算机凭空生成自然图片的目的。</p>
+<p>不妨我们先假设存在这么一个黑盒模型，它需要完成 “随机图像” -&gt; “自然图像” 这样的映射。</p>
+<p><img alt="../../_images/screenshot-20230412-190324.png" src="../../_images/screenshot-20230412-190324.png" /></p>
+<p>好了，现在，我们只需要找数据，然后学习这样的映射关系就行了，随机图片就随机生成就好了，自然图片找个图片数据集或自己动手合法地爬一些就搞定了，讲解结束~，不过，客官且慢。</p>
+</section>
+<section id="id3">
+<h2>这个任务有点难……<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<p>不妨深挖一下，这个任务有点难搞，怎么个难搞？试想一下，自然图片和生成的随机图片之间没有什么“关系”，硬学一个这个“关系”出来，恐怕没那么容易，因为，随机图片在生成的时候，是纯随机的，要想建立这样的数据集，最直接能想到的，大概就这两种方式:</p>
+<ul class="simple">
+<li><p>第一种，随机输入 -&gt; 随机自然图片
+<img alt="../../_images/screenshot-20230412-192409.png" src="../../_images/screenshot-20230412-192409.png" /></p></li>
+<li><p>第二章，随机图片到自然图片的意义映射
+<img alt="../../_images/screenshot-20230412-192543.png" src="../../_images/screenshot-20230412-192543.png" /></p></li>
+</ul>
+<p>以上的两种方法，都无法保证模型要学习的这个“关系”的稳定性，即可能存在以下情况：</p>
+<ul class="simple">
+<li><p>本轮学习，随机A隐射到自然A（随机A-&gt;自然A），下一轮学习，随机A学习隐射到自然B（随机A-&gt;自然B）；</p></li>
+<li><p>同一轮学习中，随机A到自然A的映射 与 随机B到自然B的映射 并不存在或者本身就是矛盾的；</p></li>
+</ul>
+<p>综上，构造这个数据集需要一些技巧或者方法。</p>
+</section>
+<section id="id4">
+<h2>前向扩散<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<p>从上面的分析来看，在训练这个黑盒模型时，需要在数据集中建立”随机”-&gt;”自然”之间的稳定关系，我们可以从”自然”图片入手，通过向自然图片加入高斯噪声，使其成为像素的分布也成为服从标准高斯分布的伪随机图像。这样生成的数据集，接没有上面的不稳定的问题了，图像的噪声怎么加来着？上公式：</p>
+<p>$X_{noised} = a * X + b * N$</p>
+<p>其中$X_{noised}$代表加了噪声的图像，$X$代表原图像，$N$代表噪声，a代表原图像的保留强度，b代表加入噪声的强度，不妨称它们为信号率和噪声率，来看看效果</p>
+<p><img alt="../../_images/screenshot-20230412-200015.png" src="../../_images/screenshot-20230412-200015.png" /></p>
+<p>这次在a比较大b比较小时的效果，加噪后的图像显然和平时所看到的雪花噪声图还差得很远很远，没关系，我可可以多加几次或者把a调小，把b调大，这些都是可以操作的参数，但是真的可以随表调吗？答案是可以，不过有一个前提，就是加噪后的图像，其像素点也需要服从标准高斯分布，这样才可以和我们的初衷对应上了（输入纯噪声输出自然图像），这里就会对a和b这两个值有一定的限制，可以简单推导一下：</p>
+<ol class="simple">
+<li><p>首先噪声$N$是我们操控的，是可以确定它来自标准高斯分布，记作$N \sim N(0,1)$；</p></li>
+<li><p>$X$是自然图像，一般情况下，我们在做训练时，都会将其进行Normalize，所以$X$也可以服从标准高斯分布，，记作$N \sim N(0,1)$；</p></li>
+<li><p>$X_{noised}$是两个高斯分布变量之和，根据高斯分布的性质，可以得到$X_{noised}服从均值0，方差
+$a^2+b^2$的高斯分布，记为$X_{noised} \sim N(0,a^2+b^2)$；</p></li>
+<li><p>要想$X_{noised}$也服从标准高斯分布，就必须保证$a^2+b^2=1$，也就是a和b各自平方的和等于1。</p></li>
+</ol>
+<p>然后，如果一开始就给一个很小的a一个很大的b，让模型直接一步去拟合出$X$，不过这么训练出现的模型的泛化性可能就有点弱了，一般情况下，我们会把去噪任务拆解成多轮的形式进行，让模型看见更多不同的程度噪声，挺高数据利用率，同时提高模型的泛化能力。</p>
+<p><img alt="../../_images/screenshot-20230412-203142.png" src="../../_images/screenshot-20230412-203142.png" /></p>
+<p>上面的推导，只要一直保证$a^2+b^2=1$，推广到多次加噪声，最终出来的加噪图像，还是服从标准高斯分布的，证明如下：</p>
+<ol class="simple">
+<li><p>假设$X_t$代表加噪t轮后的图像，$a_t$和$b_t$表示第t轮的信号率和噪声率，由于$a_t^2+b_t^2=1$的性质存在，可以记$b_t=\sqrt{\beta_t}$ $a_t=\sqrt{1-\beta_t}$;</p></li>
+<li><p>有$X_1 = \sqrt{1-\beta_1} * X_0 + \sqrt{\beta_1} * N(0, 1)$，即有$X_1 \sim N(0, 1 - \beta_1 + \beta_1) = N(0, 1)$</p></li>
+<li><p>有$X_t = \sqrt{1-\beta_t} * X_{t-1} + \sqrt{\beta_t} N(0, 1)$，最后还是有$X_t \sim N(0, 1 - \beta_t + \beta_t) = N(0, 1)$</p></li>
+</ol>
+<p>以上的推导，是对<a class="reference external" href="http://arxiv.org/abs/2006.11239">DDPM</a>中，diffuse过程的一个简明的说明，论文中还介绍一个可以在扩散过程把n步简化成1步的公式证明，如果感兴趣，可以直接观看论文。</p>
+<p><img alt="../../_images/screenshot-20230412-204555.png" src="../../_images/screenshot-20230412-204555.png" /></p>
+<p>我们不妨把从自然图像中生成这样的噪声图像的过程称为扩散。</p>
+<p><img alt="../../_images/screenshot-20230412-204042.png" src="../../_images/screenshot-20230412-204042.png" /></p>
+<p>有了这些和自然图像有关系的随机图像后，下一步就是训练模型呗。</p>
+</section>
+<section id="id5">
+<h2>优化目标是什么？<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<p>一个比较直观的训练方法，就是直接拿加噪声的后图片放进模型中进行推理，在获得结果后，直接计算这个结果和原图的差异，再进行梯度下降，如下图所示：</p>
+<p><img alt="../../_images/screenshot-20230413-120220.png" src="../../_images/screenshot-20230413-120220.png" /></p>
+<p>这么做，也不是不行，不过原论文有一个数学上的描述：</p>
+<p><img alt="study/diffusion/screenshot-20230413-150508.png" src="study/diffusion/screenshot-20230413-150508.png" /></p>
+<p><img alt="study/diffusion/screenshot-20230413-150614.png" src="study/diffusion/screenshot-20230413-150614.png" /></p>
+<p>总的来说，我们可以直接从自然图像与去噪图像的差异来获得梯度，也可以从生成噪声和估计噪声来获得梯度，两者从理论上讲，区别不大，不过一般情况，更倾向于后者，因为去噪图片中包含了自然图像的信息，对模型来说还需要预测这部分的数据，对模型来说是一个负担，相比之下，让模型学习噪声会更容易些，这个和ResNet中，让模型来学习残差的思路有异曲同工之妙吧。</p>
+<p><img alt="study/diffusion/screenshot-20230413-151829.png" src="study/diffusion/screenshot-20230413-151829.png" /></p>
+</section>
+<section id="talk-is-cheap-show-me-the-code">
+<h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Permalink to this heading"></a></h2>
+<p>代码我上载在<a class="reference external" href="https://github.com/Qero/UnderstandDiffusionModels">Github</a>上，模型使用的是一个RessUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step_embedding</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">),</span> 
+        <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">emb</span>
+</pre></div>
+</div>
+<p>其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果</p>
+<p><img alt="study/diffusion/screenshot-20230413-155759.png" src="study/diffusion/screenshot-20230413-155759.png" /></p>
+<p>一个采样的动图</p>
+<p><img alt="study/diffusion/show_results.gif" src="study/diffusion/show_results.gif" /></p>
+</section>
+<section id="id6">
+<h2>后续<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<p>对于扩散模型来说，上面介绍得差不多了，扩散模型，目前最大的应用莫过于AIGC了。从目前应用广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：</p>
+<p><img alt="study/diffusion/screenshot-20230413-161018.png" src="study/diffusion/screenshot-20230413-161018.png" /></p>
+<p>SD模型的核心还是中间的这个扩散模型，不过增多了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件–在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种finetune的技巧（例如<a class="reference external" href="https://github.com/cloneofsimo/lora">LoRA</a>、<a class="reference external" href="https://openreview.net/pdf?id=d71n4ftoCBy">LoHa</a>、<a class="reference external" href="https://github.com/KohakuBlueleaf/LyCORIS">LyCORIS</a>等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~</p>
+</section>
+<section id="refs">
+<h2>Refs.<a class="headerlink" href="#refs" title="Permalink to this heading"></a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="https://arxiv.org/abs/2006.11239">DDPM</a> 必看</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2010.02502">DDIM</a> 裂墙推荐</p></li>
+<li><p><a class="reference external" href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2112.10752">PNMD</a> 推荐</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="扩散模型" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../programming/index.html" class="btn btn-neutral float-right" title="编程" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, qero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -3,17 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-学习笔记
+扩散模型
 ================================
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 1
    
-   detection/index
-   super_resolution/index
-   denoise/index
-   quality_assessment/index
-   segmentation/index
-   general_model/index
-   diffusion/index
-   programming/index
+   difussion

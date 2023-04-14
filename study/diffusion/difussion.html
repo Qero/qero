@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>聊聊扩散模型 &mdash; qero 1.0.0 documentation</title>
@@ -11,9 +11,10 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/sphinx_highlight.js"></script>
         <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -30,15 +31,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../../index.html" class="icon icon-home">
-            qero
+            <a href="../../index.html" class="icon icon-home"> qero
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,8 +51,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#id3">这个任务有点难……</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">前向扩散</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id5">优化目标是什么？</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">后向逆扩散（采样）</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#talk-is-cheap-show-me-the-code">Talk is cheap, show me the code……</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">后续</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">后续</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#refs">Refs.</a></li>
 </ul>
 </li>
@@ -84,7 +82,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">学习笔记</a></li>
           <li class="breadcrumb-item"><a href="index.html">扩散模型</a></li>
       <li class="breadcrumb-item active">聊聊扩散模型</li>
@@ -161,6 +159,20 @@
 <p>总的来说，我们可以直接从自然图像与去噪图像的差异来获得梯度，也可以从生成噪声和估计噪声来获得梯度，两者从理论上讲，区别不大，不过一般情况，更倾向于后者，因为去噪图片中包含了自然图像的信息，对模型来说还需要预测这部分的数据，对模型来说是一个负担，相比之下，让模型学习噪声会更容易些，这个和ResNet中，让模型来学习残差的思路有异曲同工之妙吧。论文第4段中，也做了一个相关的消融实验来证明优化噪声差异的高效性。</p>
 <p><img alt="" src="../../_images/screenshot-20230413-151829.png" /></p>
 </section>
+<section id="id6">
+<h2>后向逆扩散（采样）<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<p>经过上面的训练，我们就可以得到一个估算图像噪声的模型，拿这个模型，我们可以通过一下步骤来将一个纯噪声图像转换为自然图像：</p>
+<ol class="arabic simple">
+<li><p>使用<span class="math notranslate nohighlight">\(N(0,1)\)</span>生成一张纯噪声图像，记作<span class="math notranslate nohighlight">\(X_t\)</span>, 并把目前的加噪步数定为t；</p></li>
+<li><p>使用模型估计图像的噪声<span class="math notranslate nohighlight">\(N_t = Model(X_t, t)\)</span>；</p></li>
+<li><p>根据<span class="math notranslate nohighlight">\(t\)</span>，找到前向扩散过程中对应的信噪率<span class="math notranslate nohighlight">\(a_t\)</span>和<span class="math notranslate nohighlight">\(b_t\)</span>;</p></li>
+<li><p>恢复加噪T轮前的图片 <span class="math notranslate nohighlight">\(Y_t = (X_t - b_t * X_t) / a_t\)</span>；</p></li>
+<li><p>重组t-1时刻的噪声图片，<span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1} * Y_t + b_{t-1} * N_t\)</span>;</p></li>
+<li><p>让<span class="math notranslate nohighlight">\(t=t-1，X_t = X_{t-1}\)</span>，重复第2~5步，直到t=0，完成采样，输出<span class="math notranslate nohighlight">\(X_0\)</span>；</p></li>
+</ol>
+<p><img alt="" src="../../_images/screenshot-20230414-113256.png" /></p>
+<p>至此，扩散模型就完成了从纯噪声生成自然图像的任务。</p>
+</section>
 <section id="talk-is-cheap-show-me-the-code">
 <h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Permalink to this heading"></a></h2>
 <p>代码我上载在<a class="reference external" href="https://github.com/Qero/UnderstandDiffusionModels">Github</a>上，模型使用的是一个ResUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：</p>
@@ -178,8 +190,8 @@
 <p>一个采样的动图</p>
 <p><img alt="" src="../../_images/show_results.gif" /></p>
 </section>
-<section id="id6">
-<h2>后续<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<section id="id7">
+<h2>后续<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
 <p>对于扩散模型来说，上面介绍得差不多了，扩散模型目前最大的应用莫过于AIGC了。从广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：</p>
 <p><img alt="" src="../../_images/screenshot-20230413-161018.png" /></p>
 <p>从上图可以看出，SD模型的核心还是中间的这个扩散模型，不过增加了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件–在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种Finetune的技巧（例如<a class="reference external" href="https://github.com/cloneofsimo/lora">LoRA</a>、<a class="reference external" href="https://openreview.net/pdf?id=d71n4ftoCBy">LoHa</a>、<a class="reference external" href="https://github.com/KohakuBlueleaf/LyCORIS">LyCORIS</a>等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~</p>

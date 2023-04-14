@@ -93,7 +93,7 @@ $X_{noised} = a * X + b * N$
 4. 恢复加噪T轮前的图片 $Y_t = (X_t - b_t * X_t) / a_t$；
 5. 重组t-1时刻的噪声图片，注意，这里重构后的图像也要服从标准高斯分布哦～，以下两个公式都可
    1. $X_{t-1} = a_{t-1} * Y_t + b_{t-1} * N_t$;   (DDIM的采样公式)
-   2. $X_{t-1} = a_{t-1}* Y_t + \sqrt{b_{t-1}^2 - \sigma_t^2} * N_t + \sigma_t * N(1, 0), \sigma_t = b_{t-1} / a_{t-1}$;    (DDPM的采样公式)
+   2. $X_{t-1} = a_{t-1}* Y_t + \sqrt{b_{t-1}^2 - \sigma_t^2} * N_t + \sigma_t * N(1, 0), \sigma_t = \sigma_t = b_{t-1} / b_{t} * \sqrt{1 - a_t^2 / b_{t-1}^2}$;    (DDPM的采样公式)
 1. 让$t=t-1，X_t = X_{t-1}$，重复第2~5步，直到t=0，完成采样，输出$Y_0$；
 
 ![](./_static/screenshot-20230414-113256.png)

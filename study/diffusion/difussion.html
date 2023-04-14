@@ -170,7 +170,7 @@
 <li><p>重组t-1时刻的噪声图片，注意，这里重构后的图像也要服从标准高斯分布哦～，以下两个公式都可</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1} * Y_t + b_{t-1} * N_t\)</span>;   (DDIM的采样公式)</p></li>
-<li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1}* Y_t + \sqrt{b_{t-1}^2 - \sigma_t^2} * N_t + \sigma_t * N(1, 0), \sigma_t = b_{t-1} / a_{t-1}\)</span>;    (DDPM的采样公式)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1}* Y_t + \sqrt{b_{t-1}^2 - \sigma_t^2} * N_t + \sigma_t * N(1, 0), \sigma_t = \sigma_t = b_{t-1} / b_{t} * \sqrt{1 - a_t^2 / b_{t-1}^2}\)</span>;    (DDPM的采样公式)</p></li>
 </ol>
 </li>
 <li><p>让<span class="math notranslate nohighlight">\(t=t-1，X_t = X_{t-1}\)</span>，重复第2~5步，直到t=0，完成采样，输出<span class="math notranslate nohighlight">\(Y_0\)</span>；</p></li>

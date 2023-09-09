@@ -16,3 +16,4 @@
    super_resolution/index
    quality_assessment/index
    segmentation/index
+   llm/index

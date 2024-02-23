@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>聊聊扩散模型 &mdash; qero 1.0.0 documentation</title>
+  <title>聊聊扩散模型 &mdash; 清泉的学习笔记 1.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> qero
+            <a href="../../index.html" class="icon icon-home"> 清泉的学习笔记
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -63,6 +63,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../super_resolution/index.html">超分</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quality_assessment/index.html">质量评估</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/index.html">分割</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../llm/index.html">LLMs/MLLMs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../in_action/index.html">实战笔记</a></li>
@@ -75,7 +76,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">qero</a>
+          <a href="../../index.html">清泉的学习笔记</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -131,7 +132,7 @@
 <ol class="arabic simple">
 <li><p>首先噪声<span class="math notranslate nohighlight">\( N\)</span>是我们操控的，是可以确定它来自标准高斯分布，记作<span class="math notranslate nohighlight">\( N \sim N(0,1)\)</span>；</p></li>
 <li><p><span class="math notranslate nohighlight">\( X\)</span>是自然图像，一般情况下，我们在做训练时，都会将其进行Normalize，所以<span class="math notranslate nohighlight">\(X\)</span>也可以服从标准高斯分布，，记作<span class="math notranslate nohighlight">\(N \sim N(0,1)\)</span>；</p></li>
-<li><p><span class="math notranslate nohighlight">\( X_{noised}\)</span>是两个高斯分布随机变量之和，根据高斯分布的性质，可以得到<span class="math notranslate nohighlight">\(X_{noised}1\)</span>服从均值0，方差
+<li><p><span class="math notranslate nohighlight">\( X_{noised}\)</span>是两个高斯分布随机变量之和，根据高斯分布的性质，可以得到<span class="math notranslate nohighlight">\(X_{noised}\)</span>服从均值0，方差
 <span class="math notranslate nohighlight">\( a^2 + b^2 \)</span>的高斯分布，记为<span class="math notranslate nohighlight">\( X_{noised} \sim N(0,a^2+b^2)\)</span>；</p></li>
 <li><p>要想<span class="math notranslate nohighlight">\( X_{noised}\)</span>也服从标准高斯分布，就必须保证<span class="math notranslate nohighlight">\( a^2+b^2=1\)</span>，也就是a和b各自平方的和等于1，这就是对每次加噪声时，对信号率和噪声率的一个限制了。</p></li>
 </ol>
@@ -166,7 +167,7 @@
 <li><p>使用<span class="math notranslate nohighlight">\(N(0,1)\)</span>生成一张纯噪声图像，记作<span class="math notranslate nohighlight">\(X_t\)</span>, 并把目前的加噪步数定为t；</p></li>
 <li><p>使用模型估计图像的噪声<span class="math notranslate nohighlight">\(N_t = Model(X_t, t)\)</span>；</p></li>
 <li><p>根据<span class="math notranslate nohighlight">\(t\)</span>，找到前向扩散过程中对应的信噪率<span class="math notranslate nohighlight">\(a_t\)</span>和<span class="math notranslate nohighlight">\(b_t\)</span>;</p></li>
-<li><p>恢复加噪T轮前的图片 <span class="math notranslate nohighlight">\(Y_t = (X_t - b_t * X_t) / a_t\)</span>；</p></li>
+<li><p>恢复加噪T轮前的图片 <span class="math notranslate nohighlight">\(Y_t = (X_t - b_t * N_t) / a_t\)</span>；</p></li>
 <li><p>重组t-1时刻的噪声图片，注意，这里重构后的图像也要服从标准高斯分布哦～，以下两个公式都可</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1} * Y_t + b_{t-1} * N_t\)</span>;   (DDIM的采样公式)</p></li>
@@ -222,7 +223,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, qero.</p>
+    <p>&#169; Copyright 2020, qq.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

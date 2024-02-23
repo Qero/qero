@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'qero'
-copyright = '2020, qero'
-author = 'qero'
+project = '清泉的学习笔记'
+copyright = '2020, qq'
+author = 'qq'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'

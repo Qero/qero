@@ -9,4 +9,4 @@
 .. toctree::
    :maxdepth: 0
    
-   difussion
+   diffusion

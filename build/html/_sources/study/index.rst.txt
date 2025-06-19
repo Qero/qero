@@ -17,3 +17,4 @@
    quality_assessment/index
    segmentation/index
    llm/index
+   coding/index

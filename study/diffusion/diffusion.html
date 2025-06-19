@@ -1,24 +1,23 @@
+study/coding/
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>聊聊扩散模型 &mdash; 清泉的学习笔记 1.0.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
-        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -31,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> 清泉的学习笔记
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            清泉的学习笔记
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -64,6 +67,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../quality_assessment/index.html">质量评估</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../segmentation/index.html">分割</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../llm/index.html">LLMs/MLLMs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../coding/index.html">Coding</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../in_action/index.html">实战笔记</a></li>
@@ -83,12 +87,12 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">学习笔记</a></li>
           <li class="breadcrumb-item"><a href="index.html">扩散模型</a></li>
       <li class="breadcrumb-item active">聊聊扩散模型</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/study/diffusion/difussion.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/study/diffusion/diffusion.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -97,9 +101,9 @@
            <div itemprop="articleBody">
              
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>聊聊扩散模型<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<h1>聊聊扩散模型<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
 <section id="id2">
-<h2>从一张纯随机图片开始说起……<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<h2>从一张纯随机图片开始说起……<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <p>想象一下，如何让计算机凭空去创造一张自然的数字图像呢？计算机可以凭空生成一张纯随机图像，但随机图像是没有意义的。但所谓自然数字图像，其实就是一堆相互之间符合某种分布的像素点的集合，而一张纯随机的图片，实质上就是像素点都是独立分布的（例如每一个像素都独立服从标准高斯分布）。</p>
 <p>那要想让计算机凭空创造一张自然图像，其实就是对随机图像中的像素点进行一些处理，使其这些像素点之间的联系在处理后也能服从像自然图片一样的分布，即完成从随机图像到自然图像的映射，从而达到了让计算机凭空生成自然图片的目的。</p>
 <p>不妨我们先假设存在这么一个黑盒模型，它需要完成 “随机图像” -&gt; “自然图像” 这样的映射。</p>
@@ -107,7 +111,7 @@
 <p>好了，现在，我们只需要找数据，然后学习这样的映射关系就行了，随机图片就随机生成就好了，自然图片找个图片数据集或自己动手合法地爬一些就搞定了，聊天结束？客官且慢~</p>
 </section>
 <section id="id3">
-<h2>这个任务有点难……<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<h2>这个任务有点难……<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
 <p>不妨深挖一下，这个任务有点难搞，怎么个难搞？试想一下，自然图片和生成的随机图片之间没有什么“关系”，硬学一个这个“关系”出来，恐怕没那么容易，因为，随机图片在生成的时候，是纯随机的，要想建立这样的数据集，最直接能想到的，大概就这两种方式:</p>
 <ul class="simple">
 <li><p>第一种，随机输入 -&gt; 随机自然图片
@@ -123,7 +127,7 @@
 <p>综上，构造这个数据集需要一些技巧或者方法，来保证生成的随机图像与自然图像之间的关系的稳定性。</p>
 </section>
 <section id="id4">
-<h2>前向扩散<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<h2>前向扩散<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
 <p>从上面的分析来看，在训练这个黑盒模型时，需要在数据集中建立”随机”-&gt;”自然”之间的稳定关系，我们可以从”自然”图片入手，通过向自然图片加入高斯噪声，使其成为像素的分布也服从标准高斯分布的伪随机图像。这样生成的数据集，就没有上面的不稳定的问题了，图像的噪声怎么加来着？上公式：</p>
 <p><span class="math notranslate nohighlight">\(X_{noised} = a * X + b * N\)</span></p>
 <p>其中<span class="math notranslate nohighlight">\( X_{noised}\)</span>代表加了噪声的图像，<span class="math notranslate nohighlight">\( X\)</span>代表原图像，<span class="math notranslate nohighlight">\( N\)</span>代表噪声，a代表原图像的保留强度，b代表加入噪声的强度，不妨称它们为信号率和噪声率，来看看效果</p>
@@ -151,7 +155,7 @@
 <p>有了这些和自然图像有关系的随机图像后，下一步就是训练模型呗。</p>
 </section>
 <section id="id5">
-<h2>优化目标是什么？<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<h2>优化目标是什么？<a class="headerlink" href="#id5" title="Link to this heading"></a></h2>
 <p>一个比较直观的训练方法，就是直接拿加噪声的后图片放进模型中进行推理，在获得结果后，直接计算这个结果和原图的差异，再进行梯度下降，如下图所示：</p>
 <p><img alt="" src="../../_images/screenshot-20230413-120220.png" /></p>
 <p>这么做，也不是不行，不过原论文有一个数学上的描述：</p>
@@ -161,7 +165,7 @@
 <p><img alt="" src="../../_images/screenshot-20230413-151829.png" /></p>
 </section>
 <section id="id6">
-<h2>后向逆扩散（采样）<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<h2>后向逆扩散（采样）<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
 <p>经过上面的训练，我们就可以得到一个估算图像噪声的模型，拿这个模型，我们可以通过一下步骤来将一个纯噪声图像转换为自然图像：</p>
 <ol class="arabic simple">
 <li><p>使用<span class="math notranslate nohighlight">\(N(0,1)\)</span>生成一张纯噪声图像，记作<span class="math notranslate nohighlight">\(X_t\)</span>, 并把目前的加噪步数定为t；</p></li>
@@ -180,9 +184,9 @@
 <p>至此，扩散模型就完成了从纯噪声生成自然图像的任务。</p>
 </section>
 <section id="talk-is-cheap-show-me-the-code">
-<h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Permalink to this heading"></a></h2>
+<h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Link to this heading"></a></h2>
 <p>代码我上载在<a class="reference external" href="https://github.com/Qero/UnderstandDiffusionModels">Github</a>上，模型使用的是一个ResUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">step_embedding</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">step_embedding</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
     <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">),</span> 
@@ -197,13 +201,13 @@
 <p><img alt="" src="../../_images/show_results.gif" /></p>
 </section>
 <section id="id7">
-<h2>后续<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<h2>后续<a class="headerlink" href="#id7" title="Link to this heading"></a></h2>
 <p>对于扩散模型来说，上面介绍得差不多了，扩散模型目前最大的应用莫过于AIGC了。从广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：</p>
 <p><img alt="" src="../../_images/screenshot-20230413-161018.png" /></p>
 <p>从上图可以看出，SD模型的核心还是中间的这个扩散模型，不过增加了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件–在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种Finetune的技巧（例如<a class="reference external" href="https://github.com/cloneofsimo/lora">LoRA</a>、<a class="reference external" href="https://openreview.net/pdf?id=d71n4ftoCBy">LoHa</a>、<a class="reference external" href="https://github.com/KohakuBlueleaf/LyCORIS">LyCORIS</a>等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~</p>
 </section>
 <section id="refs">
-<h2>Refs.<a class="headerlink" href="#refs" title="Permalink to this heading"></a></h2>
+<h2>Refs.<a class="headerlink" href="#refs" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://arxiv.org/abs/2006.11239">DDPM</a> 必看</p></li>
 <li><p><a class="reference external" href="https://arxiv.org/abs/2010.02502">DDIM</a> 裂墙推荐</p></li>

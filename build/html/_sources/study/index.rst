@@ -3,11 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-学习笔记
+论文笔记
 ================================
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 2
    
    denoise/index
    detection/index
@@ -17,4 +17,4 @@
    quality_assessment/index
    segmentation/index
    llm/index
-   coding/index
+

@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>聊聊扩散模型 &#8212; 穷QQ的技术日记 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=f9c1cefe"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'study/diffusion/diffusion';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="通用模型" href="../general_model/index.html" />
+    <link rel="prev" title="扩散模型" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">穷QQ的技术日记 1.0.0 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">学习笔记</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../denoise/index.html">降噪</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../denoise/DANet.html">DANet</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../detection/index.html">目标检测</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../detection/ssd.html">SSD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../detection/retinanet.html">RetinaNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../detection/retinaface.html">RetinaFace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../detection/sod.html">综述 Salient Object Detection</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">扩散模型</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">聊聊扩散模型</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../general_model/index.html">通用模型</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../general_model/MLPs-Mixer.html">MLPs-Mixer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../general_model/Res-MLP.html">Res-MLP</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../super_resolution/index.html">超分</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/CARN.html">CARN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/ClassSR.html">ClassSR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/DBPN.html">DBPN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/DRRN.html">DRRN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/DSRN.html">DSRN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/EDSR_MDSR.html">EDSR &amp;&amp; MDSR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/EDVR.html">EDVR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/EnhanceNet.html">EnhanceNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/ESRGAN.html">ESRGAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/LapSRN.html">LapSRN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/LIIF.html">LIIF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/MemNet.html">MemNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/Meta-RDN.html">Meta-RDN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/MSRN.html">MSRN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/RCAN.html">RCAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/RDN.html">RDN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/RealSR.html">RealSR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/RNAN.html">RNAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/SAN.html">SAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/SRDenseNet.html">SRDenseNet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/SRFBN.html">SRFBN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/SRGAN.html">SRGAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../super_resolution/VideoESPCN.html">VideoESPCN</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../quality_assessment/index.html">质量评估</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quality_assessment/DeepFL-IQA.html">DeepFL-IQA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quality_assessment/NIMA.html">NIMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quality_assessment/RankIQA.html">RankIQA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quality_assessment/VIDEVAL.html">VIDEVAL</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../segmentation/index.html">分割</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../segmentation/segmentation.html">综述 Deep Segmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../segmentation/SINET.html">SINET</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../llm/index.html">LLMs/MLLMs</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../llm/HuggingGPT.html">HuggingGPT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../llm/Survey_on_MLLM_2023.html">Survey on MLLM 2023</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../coding/index.html">Coding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../coding/LeetCode283.html">LeetCode 283 移动零</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../in_action/index.html">实战笔记</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../in_action/programming/index.html">编程</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../in_action/programming/EffectiveC%2B%2B.html">Effective C++</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/study/diffusion/diffusion.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>聊聊扩散模型</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">从一张纯随机图片开始说起……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">这个任务有点难……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">前向扩散</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">优化目标是什么？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">后向逆扩散（采样）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#talk-is-cheap-show-me-the-code">Talk is cheap, show me the code……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">后续</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refs">Refs.</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>聊聊扩散模型<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2>从一张纯随机图片开始说起……<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>想象一下，如何让计算机凭空去创造一张自然的数字图像呢？计算机可以凭空生成一张纯随机图像，但随机图像是没有意义的。但所谓自然数字图像，其实就是一堆相互之间符合某种分布的像素点的集合，而一张纯随机的图片，实质上就是像素点都是独立分布的（例如每一个像素都独立服从标准高斯分布）。</p>
+<p>那要想让计算机凭空创造一张自然图像，其实就是对随机图像中的像素点进行一些处理，使其这些像素点之间的联系在处理后也能服从像自然图片一样的分布，即完成从随机图像到自然图像的映射，从而达到了让计算机凭空生成自然图片的目的。</p>
+<p>不妨我们先假设存在这么一个黑盒模型，它需要完成 “随机图像” -&gt; “自然图像” 这样的映射。</p>
+<p><img alt="" src="../../_images/screenshot-20230412-190324.png" /></p>
+<p>好了，现在，我们只需要找数据，然后学习这样的映射关系就行了，随机图片就随机生成就好了，自然图片找个图片数据集或自己动手合法地爬一些就搞定了，聊天结束？客官且慢~</p>
+</section>
+<section id="id3">
+<h2>这个任务有点难……<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>不妨深挖一下，这个任务有点难搞，怎么个难搞？试想一下，自然图片和生成的随机图片之间没有什么“关系”，硬学一个这个“关系”出来，恐怕没那么容易，因为，随机图片在生成的时候，是纯随机的，要想建立这样的数据集，最直接能想到的，大概就这两种方式:</p>
+<ul class="simple">
+<li><p>第一种，随机输入 -&gt; 随机自然图片
+<img alt="" src="../../_images/screenshot-20230412-192409.png" /></p></li>
+<li><p>第二种，随机图片到自然图片的一一映射
+<img alt="" src="../../_images/screenshot-20230412-192543.png" /></p></li>
+</ul>
+<p>以上的两种方法，都无法保证模型要学习的这个“关系”的稳定性，因为可能存在以下情况：</p>
+<ul class="simple">
+<li><p>本轮学习，随机A映射到自然A（随机A-&gt;自然A），下一轮学习，随机A学习隐射到自然B（随机A-&gt;自然B）；</p></li>
+<li><p>同一轮学习中，随机A到自然A的映射 与 随机B到自然B的映射 本身就是矛盾的；</p></li>
+</ul>
+<p>综上，构造这个数据集需要一些技巧或者方法，来保证生成的随机图像与自然图像之间的关系的稳定性。</p>
+</section>
+<section id="id4">
+<h2>前向扩散<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>从上面的分析来看，在训练这个黑盒模型时，需要在数据集中建立”随机”-&gt;”自然”之间的稳定关系，我们可以从”自然”图片入手，通过向自然图片加入高斯噪声，使其成为像素的分布也服从标准高斯分布的伪随机图像。这样生成的数据集，就没有上面的不稳定的问题了，图像的噪声怎么加来着？上公式：</p>
+<p><span class="math notranslate nohighlight">\(X_{noised} = a * X + b * N\)</span></p>
+<p>其中<span class="math notranslate nohighlight">\( X_{noised}\)</span>代表加了噪声的图像，<span class="math notranslate nohighlight">\( X\)</span>代表原图像，<span class="math notranslate nohighlight">\( N\)</span>代表噪声，a代表原图像的保留强度，b代表加入噪声的强度，不妨称它们为信号率和噪声率，来看看效果</p>
+<p><img alt="" src="../../_images/screenshot-20230412-200015.png" /></p>
+<p>这是在a比较大b比较小时的效果，加噪后的图像显然和平时所看到的雪花噪声图还差得很远很远，不过没关系，我可以多加几次或者把a调小，把b调大，这些都是可以操作的参数，但是真的可以随便调吗？答案是可以的，不过有一个前提，就是加噪后的图像，其像素点也需要服从和喂给模型的随机图像同样的分布，一般就是标准高斯分布N(0, 1)，这样才可以和我们的初衷对应上了（输入纯噪声输出自然图像），这里就会对a和b这两个值有一定的限制，可以简单推导一下：</p>
+<ol class="arabic simple">
+<li><p>首先噪声<span class="math notranslate nohighlight">\( N\)</span>是我们操控的，是可以确定它来自标准高斯分布，记作<span class="math notranslate nohighlight">\( N \sim N(0,1)\)</span>；</p></li>
+<li><p><span class="math notranslate nohighlight">\( X\)</span>是自然图像，一般情况下，我们在做训练时，都会将其进行Normalize，所以<span class="math notranslate nohighlight">\(X\)</span>也可以服从标准高斯分布，，记作<span class="math notranslate nohighlight">\(N \sim N(0,1)\)</span>；</p></li>
+<li><p><span class="math notranslate nohighlight">\( X_{noised}\)</span>是两个高斯分布随机变量之和，根据高斯分布的性质，可以得到<span class="math notranslate nohighlight">\(X_{noised}\)</span>服从均值0，方差
+<span class="math notranslate nohighlight">\( a^2 + b^2 \)</span>的高斯分布，记为<span class="math notranslate nohighlight">\( X_{noised} \sim N(0,a^2+b^2)\)</span>；</p></li>
+<li><p>要想<span class="math notranslate nohighlight">\( X_{noised}\)</span>也服从标准高斯分布，就必须保证<span class="math notranslate nohighlight">\( a^2+b^2=1\)</span>，也就是a和b各自平方的和等于1，这就是对每次加噪声时，对信号率和噪声率的一个限制了。</p></li>
+</ol>
+<p>然后，如果一开始就给一个很小的a一个很大的b，让模型直接一步去拟合出<span class="math notranslate nohighlight">\(X\)</span>，不过这么训练出现的模型的泛化性可能就有点弱了，一般情况下，我们会把去噪任务拆解成多轮的形式进行，让模型看见更多不同的程度噪声，挺高数据利用率，同时提高模型的泛化能力。</p>
+<p><img alt="" src="../../_images/screenshot-20230412-203142.png" /></p>
+<p>上面的推导，只要一直保证<span class="math notranslate nohighlight">\( a^2+b^2=1\)</span>，推广到多次加噪声，最终出来的加噪图像，还是服从标准高斯分布的，证明如下：</p>
+<ol class="arabic simple">
+<li><p>假设<span class="math notranslate nohighlight">\( X_t\)</span>代表加噪t轮后的图像，<span class="math notranslate nohighlight">\( a_t\)</span>和<span class="math notranslate nohighlight">\( b_t\)</span>表示第t轮的信号率和噪声率，由于<span class="math notranslate nohighlight">\( a_t^2+b_t^2=1\)</span>的性质存在，可以记<span class="math notranslate nohighlight">\( b_t=\sqrt{\beta_t} a_t=\sqrt{1-\beta_t}\)</span>;</p></li>
+<li><p>有<span class="math notranslate nohighlight">\( X_1 = \sqrt{1-\beta_1} * X_0 + \sqrt{\beta_1} * N(0, 1)\)</span>，即有<span class="math notranslate nohighlight">\( X_1 \sim N(0, 1 - \beta_1 + \beta_1) = N(0, 1)\)</span>;</p></li>
+<li><p>有<span class="math notranslate nohighlight">\( X_t = \sqrt{1-\beta_t} * X_{t-1} + \sqrt{\beta_t} N(0, 1)\)</span>，最后还是有<span class="math notranslate nohighlight">\( X_t \sim N(0, 1 - \beta_t + \beta_t) = N(0, 1)\)</span>.</p></li>
+</ol>
+<p>以上的推导，是对<a class="reference external" href="http://arxiv.org/abs/2006.11239">DDPM</a>中，diffuse过程的一个简明的说明，论文中还介绍一个可以在扩散过程把n步简化成1步的公式证明，如果感兴趣，可以直接观看论文。</p>
+<p><img alt="" src="../../_images/screenshot-20230412-204555.png" /></p>
+<p>我们不妨把从自然图像中生成这样的噪声图像的过程称为扩散。</p>
+<p><img alt="" src="../../_images/screenshot-20230412-204042.png" /></p>
+<p>有了这些和自然图像有关系的随机图像后，下一步就是训练模型呗。</p>
+</section>
+<section id="id5">
+<h2>优化目标是什么？<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>一个比较直观的训练方法，就是直接拿加噪声的后图片放进模型中进行推理，在获得结果后，直接计算这个结果和原图的差异，再进行梯度下降，如下图所示：</p>
+<p><img alt="" src="../../_images/screenshot-20230413-120220.png" /></p>
+<p>这么做，也不是不行，不过原论文有一个数学上的描述：</p>
+<p><img alt="" src="../../_images/screenshot-20230413-150508.png" /></p>
+<p><img alt="" src="../../_images/screenshot-20230413-150614.png" /></p>
+<p>总的来说，我们可以直接从自然图像与去噪图像的差异来获得梯度，也可以从生成噪声和估计噪声来获得梯度，两者从理论上讲，区别不大，不过一般情况，更倾向于后者，因为去噪图片中包含了自然图像的信息，对模型来说还需要预测这部分的数据，对模型来说是一个负担，相比之下，让模型学习噪声会更容易些，这个和ResNet中，让模型来学习残差的思路有异曲同工之妙吧。论文第4段中，也做了一个相关的消融实验来证明优化噪声差异的高效性。</p>
+<p><img alt="" src="../../_images/screenshot-20230413-151829.png" /></p>
+</section>
+<section id="id6">
+<h2>后向逆扩散（采样）<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>经过上面的训练，我们就可以得到一个估算图像噪声的模型，拿这个模型，我们可以通过一下步骤来将一个纯噪声图像转换为自然图像：</p>
+<ol class="arabic simple">
+<li><p>使用<span class="math notranslate nohighlight">\(N(0,1)\)</span>生成一张纯噪声图像，记作<span class="math notranslate nohighlight">\(X_t\)</span>, 并把目前的加噪步数定为t；</p></li>
+<li><p>使用模型估计图像的噪声<span class="math notranslate nohighlight">\(N_t = Model(X_t, t)\)</span>；</p></li>
+<li><p>根据<span class="math notranslate nohighlight">\(t\)</span>，找到前向扩散过程中对应的信噪率<span class="math notranslate nohighlight">\(a_t\)</span>和<span class="math notranslate nohighlight">\(b_t\)</span>;</p></li>
+<li><p>恢复加噪T轮前的图片 <span class="math notranslate nohighlight">\(Y_t = (X_t - b_t * N_t) / a_t\)</span>；</p></li>
+<li><p>重组t-1时刻的噪声图片，注意，这里重构后的图像也要服从标准高斯分布哦～，以下两个公式都可</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1} * Y_t + b_{t-1} * N_t\)</span>;   (DDIM的采样公式)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_{t-1} = a_{t-1}* Y_t + \sqrt{b_{t-1}^2 - \sigma_t^2} * N_t + \sigma_t * N(1, 0), \sigma_t = \sigma_t = b_{t-1} / b_{t} * \sqrt{1 - a_t^2 / b_{t-1}^2}\)</span>;    (DDPM的采样公式)</p></li>
+</ol>
+</li>
+<li><p>让<span class="math notranslate nohighlight">\(t=t-1，X_t = X_{t-1}\)</span>，重复第2~5步，直到t=0，完成采样，输出<span class="math notranslate nohighlight">\(Y_0\)</span>；</p></li>
+</ol>
+<p><img alt="" src="../../_images/screenshot-20230414-113256.png" /></p>
+<p>至此，扩散模型就完成了从纯噪声生成自然图像的任务。</p>
+</section>
+<section id="talk-is-cheap-show-me-the-code">
+<h2>Talk is cheap, show me the code……<a class="headerlink" href="#talk-is-cheap-show-me-the-code" title="Link to this heading">#</a></h2>
+<p>代码我上载在<a class="reference external" href="https://github.com/Qero/UnderstandDiffusionModels">Github</a>上，模型使用的是一个ResUNet，模型的输入除了加噪图像本身以外，还有对目前采样步数的一个emb，embedding的方法比较简单：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">step_embedding</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">),</span> 
+        <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_angular_speeds</span> <span class="o">*</span> <span class="n">step</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">emb</span>
+</pre></div>
+</div>
+<p>其他更多的细节就不在此处详述了，详情可以直接参考代码，以下是训了45个epoch后的效果</p>
+<p><img alt="" src="../../_images/screenshot-20230413-155759.png" /></p>
+<p>一个采样的动图</p>
+<p><img alt="" src="../../_images/show_results.gif" /></p>
+</section>
+<section id="id7">
+<h2>后续<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>对于扩散模型来说，上面介绍得差不多了，扩散模型目前最大的应用莫过于AIGC了。从广泛性来看，Stable Diffusion(SD) 应该算是比较热门的模型，其核心其实就是本文介绍扩散模型，此处引用一张别人的图片，可以对简单SD算法的工作原理了解一下：</p>
+<p><img alt="" src="../../_images/screenshot-20230413-161018.png" /></p>
+<p>从上图可以看出，SD模型的核心还是中间的这个扩散模型，不过增加了几个关键部件，一个处理Prompt的文本模型和一个压缩图片的自编码器，还有在上图没显示的一个关键组件–在采样过程中融合文本特征和图像特征的CrossAttention。当然SD的新特性显然不止这些，还有各种Finetune的技巧（例如<a class="reference external" href="https://github.com/cloneofsimo/lora">LoRA</a>、<a class="reference external" href="https://openreview.net/pdf?id=d71n4ftoCBy">LoHa</a>、<a class="reference external" href="https://github.com/KohakuBlueleaf/LyCORIS">LyCORIS</a>等）。限于篇幅，对SD的详细说明就不在此处进行了，待后面在本地实现SD后，再来写一篇分享吧~</p>
+</section>
+<section id="refs">
+<h2>Refs.<a class="headerlink" href="#refs" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://arxiv.org/abs/2006.11239">DDPM</a> 必看</p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2010.02502">DDIM</a> 裂墙推荐</p></li>
+<li><p><a class="reference external" href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/2112.10752">PNMD</a> 推荐</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">扩散模型</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../general_model/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">通用模型</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">从一张纯随机图片开始说起……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">这个任务有点难……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">前向扩散</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">优化目标是什么？</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">后向逆扩散（采样）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#talk-is-cheap-show-me-the-code">Talk is cheap, show me the code……</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">后续</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refs">Refs.</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By qq
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2020, qq.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

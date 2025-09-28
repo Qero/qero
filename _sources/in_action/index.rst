@@ -3,10 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-实战笔记
+读书&&练习随记
 ================================
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 2
 
    programming/index
+   coding/index

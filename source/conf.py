@@ -17,12 +17,13 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "穷QQ的技术日记"
-copyright = "2020, qq"
-author = "qq"
+# 默认标题
+html_title = "穷QQ的技术日记"
+copyright = "2020, QQ"
+author = "QQ"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0.0"
+release = ""
 
 
 # -- General configuration ---------------------------------------------------

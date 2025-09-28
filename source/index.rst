@@ -3,17 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to qero's Notebook!
+穷QQ的技术日记
 ================================
 
 .. toctree::
-   :maxdepth: 9
+   :maxdepth: 3
    
    study/index
    in_action/index
-   example/example
-
-
 
 Indices and tables
 ==================

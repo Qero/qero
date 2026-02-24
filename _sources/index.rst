@@ -11,6 +11,7 @@
    
    study/index
    in_action/index
+   aphorism
 
 Indices and tables
 ==================

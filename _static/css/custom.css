@@ -1,0 +1,123 @@
+.aphorism-box {
+    background-color: #FFF5F5;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    border: 1px solid #FFE0E0;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    /* Use gap for spacing between icon and content */
+    gap: 8px;
+}
+
+/* Color Variants */
+
+/* Red (Default/Existing) */
+.aphorism-box.red {
+    background-color: #FFF5F5;
+    border: 1px solid #FFE0E0;
+}
+
+/* Orange */
+.aphorism-box.orange {
+    background-color: #FFF8E6;
+    border: 1px solid #FFE8B3;
+}
+
+/* Yellow */
+.aphorism-box.yellow {
+    background-color: #FEFCE8;
+    border: 1px solid #FEF08A;
+}
+
+/* Green */
+.aphorism-box.green {
+    background-color: #F0FDF4;
+    border: 1px solid #BBF7D0;
+}
+
+/* Blue */
+.aphorism-box.blue {
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+}
+
+/* Purple */
+.aphorism-box.purple {
+    background-color: #F3E8FF;
+    border: 1px solid #E9D5FF;
+}
+
+
+.aphorism-icon {
+    /* Title font is 1.1em with 1.5 line-height = 1.65em total height */
+    /* We set the icon container height to exactly match the title line height */
+    /* Since font-size is 1.4em, we calculate height: 1.65 / 1.4 ≈ 1.18em */
+    font-size: 1.4em;
+    height: 1.18em; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    flex-shrink: 0;
+    width: 28px;
+    
+    margin: 0 0 0 10px !important;
+    padding: 0 !important;
+}
+
+.aphorism-icon p {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    display: flex; /* Ensure p tag doesn't block flex centering */
+}
+
+.aphorism-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.aphorism-content strong {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 0 !important; 
+    display: block;
+    color: #333;
+    line-height: 1.5;
+    /* Ensure title text is aligned properly within its line-height */
+    display: flex;
+    align-items: center;
+    height: 1.5em; /* Match line-height explicitly */
+}
+
+.aphorism-content p {
+    margin: 0 0 12px 0 !important;
+    padding: 0 !important;
+    line-height: 1.6;
+    text-indent: 0 !important;
+    color: #333;
+}
+
+/* Quote styling */
+.aphorism-quote {
+    border-left: 4px solid #D1D5DB;
+    padding-left: 12px !important; /* Reduced gap between border and text */
+    margin-bottom: 12px;
+    margin-left: 4px !important; /* Slight indentation for the border itself */
+}
+
+.aphorism-quote p {
+    color: #888 !important;
+    margin-bottom: 8px !important;
+}
+
+/* Footer (source) */
+.aphorism-content p:last-child {
+    margin-bottom: 0 !important;
+    font-size: 0.9em;
+    color: #666;
+}
